@@ -43,13 +43,13 @@ function KeywordPlanPage() {
 
   const summary = useQuery({
     queryKey: ["keyword-plan-summary", projectId],
-    queryFn: () => getKeywordPlanSummary(),
+    queryFn: () => getKeywordPlanSummary({ data: { projectId } }),
   });
   const listing = useQuery({
     queryKey: ["keyword-plan", projectId, search, market, priority, page],
     queryFn: () =>
       getKeywordPlan({
-        data: { search, market, priority, page, pageSize: PAGE_SIZE },
+        data: { projectId, search, market, priority, page, pageSize: PAGE_SIZE },
       }),
   });
 
@@ -82,7 +82,7 @@ function KeywordPlanPage() {
         const batch = importKeywordPlanSchema.parse({
           rows: rows.slice(offset, offset + IMPORT_BATCH_SIZE),
         });
-        await importKeywordPlan({ data: batch });
+        await importKeywordPlan({ data: { projectId, ...batch } });
         setImportProgress(
           `${Math.min(offset + batch.rows.length, rows.length).toLocaleString()} of ${rows.length.toLocaleString()} rows imported`,
         );
