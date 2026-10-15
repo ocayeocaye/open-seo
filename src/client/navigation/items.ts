@@ -4,6 +4,7 @@ import {
   Brain,
   ChartLine,
   ClipboardCheck,
+  ClipboardList,
   FileText,
   Globe,
   LayoutDashboard,
@@ -28,6 +29,11 @@ const projectNavItems = [
     to: "/p/$projectId/keywords" as const,
     label: "Keyword Research",
     icon: Search,
+  },
+  {
+    to: "/p/$projectId/plan" as const,
+    label: "Keyword Plan",
+    icon: ClipboardList,
   },
   {
     to: "/p/$projectId/saved" as const,
@@ -131,6 +137,10 @@ export function getProjectNavGroups(projectId: string) {
         byPath("/p/$projectId/domain"),
         byPath("/p/$projectId/backlinks"),
       ],
+    },
+    {
+      label: "Planning",
+      items: [byPath("/p/$projectId/plan")],
     },
     {
       label: "AI Visibility",
