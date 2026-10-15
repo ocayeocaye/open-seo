@@ -23,8 +23,10 @@ export const KeywordPlanRepository = {
       );
     }
     const deduplicated = [...uniqueRows.values()];
-    for (let offset = 0; offset < deduplicated.length; offset += 50) {
-      const values = deduplicated.slice(offset, offset + 50).map((row) => ({
+    // Local D1 allows at most 100 bound variables; each row binds 11.
+    const rowsPerInsert = 9;
+    for (let offset = 0; offset < deduplicated.length; offset += rowsPerInsert) {
+      const values = deduplicated.slice(offset, offset + rowsPerInsert).map((row) => ({
         ...row,
         phrase: row.phrase.trim().replace(/\s+/g, " "),
         id: crypto.randomUUID(),
